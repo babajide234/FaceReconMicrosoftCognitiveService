@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Detect Faces Sample</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+    
+
+        <div id="containerDiv">
+             <div id="titleDiv"> Welcome </div> 
+             <div id="content"> 
+                 <div id="btnUpload"> 
+                    <div class="upload-btn-wrapper"> 
+                        <button class="btn" >Upload a file</button> 
+                        <input type="file" name="myfile" id="upload" /> 
+                    </div>
+                </div> 
+                <div id="features"> </div>
+                <div id="imgDiv">
+                    <img id="imgx" class="imageContainer" >
+                    <div id="face"></div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            
+            document.getElementById('upload').addEventListener('change', fileChange, false);
+
+            function fileChange(event){ 
+                if(event.target.files && event.target.files.length >= 0) { 
+                    var file1= event.target.files[0]; 
+                    var reader = new FileReader(); 
+                    reader.onload = (event) => { 
+                        document.getElementById("imgx").src = event.target.result; 
+                        getFaceDetails(file1); 
+                    } 
+                } 
+                reader.readAsDataURL(event.target.files[0]);
+            }
+
+            function getFaceDetails(file){ 
+                var xmlHttp = new XMLHttpRequest(); 
+                var url="https://reconface.cognitiveservices.azure.com/face/v1.0/detect?returnFaceAttributes=age,gender,emotion"; 
+
+                xmlHttp.open("POST",url,true); 
+                
+                xmlHttp.setRequestHeader("Content-Type", "application/octet-stream");
+
+                xmlHttp.setRequestHeader("Ocp-Apim-Subscription-Key", "d56a00a55f9c44c9a0372880cfa969da"); 
+                
+                xmlHttp.send(file); 
+                
+                xmlHttp.onreadystatechange = function (response) {
+
+                    if (this.readyState == 4 && this.status == 200) { 
+                        var obj = JSON.parse(this.responseText)
+
+                        var oleft = document.getElementById("imgx").offsetLeft; 
+                        var otop = document.getElementById("imgx").offsetTop; 
+                        //console.log(obj)
+                        var faceRec = document.createElement('div')
+                        var fc = document.getElementById('face')
+
+                        obj.forEach((obj) => {
+                            // console.log(obj)
+
+                            var faceRec = document.createElement('div')
+                            
+                            faceRec.style.left =  oleft + obj.faceRectangle.left + 'px'
+                            faceRec.style.top =  otop + obj.faceRectangle.top + 'px'
+                            faceRec.style.width = obj.faceRectangle.width + 'px'
+                            faceRec.style.height = obj.faceRectangle.height + 'px'
+                            faceRec.style.border = '1px solid black'
+                            faceRec.style.position ='absolute'
+                            faceRec.id = 'faceRec'
+
+                            fc.append(faceRec)
+                        });
+                        faceRec.remove()
+                            // document.getElementById("features").innerText="Age:"+ obj[i].faceAttributes.age + " Gender:" + obj[i].faceAttributes.gender ; 
+                    }
+                  
+                    }
+
+                }
+
+
+        </script>
+    </body>
+</html>

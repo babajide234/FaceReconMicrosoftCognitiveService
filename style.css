@@ -1,0 +1,67 @@
+
+            #containerDiv{ 
+                display:grid; 
+                grid-template-areas:  "title" "content"
+            }
+            #imgDiv{ 
+                background-repeat: no-repeat; 
+                border: 1px solid #bbb; 
+                border: solid; 
+                position: relative;
+            }
+           
+            #face{ 
+                position: absolute;
+                top: 0; 
+                border:solid; 
+                border-style: ridge; 
+                border-color: cornsilk;
+            }
+            #features{ 
+                grid-area:features
+            }
+            #titleDiv{ 
+                height: 100px; 
+                display: flex; 
+                justify-content: center; 
+                align-items: center; 
+                font-size: -webkit-xxx-large; 
+                background-color: black; 
+                color: sandybrown; 
+                font-family: sans-serif; 
+                grid-area:title;
+            }
+            #content{ 
+                display:grid; 
+                justify-items:center; 
+                grid-area:content; 
+                grid-template-areas:  "upload" "features" "image"
+            }
+            #btnUpload{ 
+                grid-area:upload;
+            }
+            .upload-btn-wrapper { 
+                position: relative; 
+                overflow: hidden; 
+                display: inline-block; 
+                padding: 2%; 
+                width: 100vw; 
+                display: flex; 
+                justify-content: center; 
+            }
+            .btn { 
+                border: 2px solid gray; 
+                color:white; 
+                background-color:cornflowerblue; 
+                padding: 8px 20px; 
+                border-radius: 8px; 
+                font-size: 20px; 
+                font-weight: bold; 
+            }  
+            .upload-btn-wrapper input[type=file] { 
+                font-size: 100px; 
+                position: absolute; 
+                left: 0; 
+                top: 0; 
+                opacity: 0; 
+            }
