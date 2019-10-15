@@ -1,48 +1,132 @@
 <!DOCTYPE html>
 <html>
     <head>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Detect Faces Sample</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        
         <link rel="stylesheet" href="style.css">
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+         <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+         <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
     </head>
     <body>
+        
+            <nav>
+                <div class="container">
+                    <div class="nav-wrapper">
+                      <a href="#" class="brand-logo">Face App</a>
+                      <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a href="sass.html">Sass</a></li>
+                      </ul>
+                    </div>
+                </div>
+            </nav>
+    <main>
+            <div class="container">
+                <div class="row">
+                    <h1 class="display-1 text-center">welcome</h1>
+                </div>
+                <div id="content" class="row">
+                          <div class="col s6">
+                              <div id="btnUpload"> 
+                                  <div class="upload-btn-wrapper"> 
+                                  <p class="h2" >Upload a file</p> 
+                                  <div class="file-field input-field">
+                                      <div class="btn">
+                                      <span>File</span>
+                                      <input type="file" name="myfile" id="upload">
+                                      </div>
+                                      <div class="file-path-wrapper">
+                                       <!-- <input class="file-path validate" type="text"> -->
+                                      <input type="text"  class="file-path validate" /> 
+                                   </div>
+                                 </div>
+                              </div>
+                          </div> 
+                        </div> 
+                        
+                        <div class="col s6" id="imgcan">
+                                
+                                <div id="imgDiv">    
+                                    <img id="imgx"  class="img-fluid" alt="Responsive image">
+                                    <div id="face"></div>
+                                </div>
+                                <ul id="features" class="collection"> </ul>
+                        </div> 
+                   </div>
+               </div>
+    </div>
+
+  </main>
+    <footer class="page-footer">
+            <div class="container">
+              <div class="row">
+                <div class="col l6 s12">
+                  <h5 class="white-text"></h5>
+                  <p class="grey-text text-lighten-4"></p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                  
+                </div>
+              </div>
+            </div>
+            <div class="footer-copyright">
+              <div class="container">
+              © 2019 Copyright Text
+              <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+              </div>
+            </div>
+          </footer>
     
 
-        <div id="containerDiv">
-             <div id="titleDiv"> Welcome </div> 
-             <div id="content"> 
-                 <div id="btnUpload"> 
-                    <div class="upload-btn-wrapper"> 
-                        <button class="btn" >Upload a file</button> 
-                        <input type="file" name="myfile" id="upload" /> 
-                    </div>
-                </div> 
-                <div id="features"> </div>
-                <div id="imgDiv">
-                    <img id="imgx" class="imageContainer" >
-                    <div id="face"></div>
-                </div>
-            </div>
-        </div>
-        <script type="text/javascript">
+      
+          <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      
+      
+      <script type="text/javascript">
             
             document.getElementById('upload').addEventListener('change', fileChange, false);
-
+            var subscriptionKey = "d56a00a55f9c44c9a0372880cfa969da";
+    
+            var uriBase ="https://reconface.cognitiveservices.azure.com/face/v1.0/detect";
+        
+            // Request parameters.
+            var params = {
+                "returnFaceId": "true",
+                "returnFaceLandmarks": "false",
+                "returnFaceAttributes":
+                    "age,gender,headPose,smile,facialHair,glasses,emotion," +
+                    "hair,makeup,occlusion,accessories,blur,exposure,noise"
+            };
+        
+            
+            
             function fileChange(event){ 
                 if(event.target.files && event.target.files.length >= 0) { 
                     var file1= event.target.files[0]; 
                     var reader = new FileReader(); 
+
+                    console.log(event)
+                    // compress(event);
                     reader.onload = (event) => { 
-                        document.getElementById("imgx").src = event.target.result; 
-                        getFaceDetails(file1); 
+                       document.getElementById("imgx").src = event.target.result; 
+                       getFaceDetails(file1); 
                     } 
                 } 
                 reader.readAsDataURL(event.target.files[0]);
             }
-
+        
             function getFaceDetails(file){ 
                 var xmlHttp = new XMLHttpRequest(); 
-                var url="https://reconface.cognitiveservices.azure.com/face/v1.0/detect?returnFaceAttributes=age,gender,emotion"; 
+                var url="https://reconface.cognitiveservices.azure.com/face/v1.0/detect?"+ $.param(params); 
 
                 xmlHttp.open("POST",url,true); 
                 
@@ -53,40 +137,35 @@
                 xmlHttp.send(file); 
                 
                 xmlHttp.onreadystatechange = function (response) {
-
+                
                     if (this.readyState == 4 && this.status == 200) { 
                         var obj = JSON.parse(this.responseText)
-
                         var oleft = document.getElementById("imgx").offsetLeft; 
                         var otop = document.getElementById("imgx").offsetTop; 
-                        //console.log(obj)
                         var faceRec = document.createElement('div')
                         var fc = document.getElementById('face')
+                        var fet = document.getElementById("features")
 
                         obj.forEach((obj) => {
-                            // console.log(obj)
-
                             var faceRec = document.createElement('div')
-                            
                             faceRec.style.left =  oleft + obj.faceRectangle.left + 'px'
                             faceRec.style.top =  otop + obj.faceRectangle.top + 'px'
                             faceRec.style.width = obj.faceRectangle.width + 'px'
                             faceRec.style.height = obj.faceRectangle.height + 'px'
-                            faceRec.style.border = '1px solid black'
+                            faceRec.style.border = '2px solid black'
                             faceRec.style.position ='absolute'
-                            faceRec.id = 'faceRec'
-
+                            faceRec.id = 'faceRec' 
                             fc.append(faceRec)
-                        });
-                        faceRec.remove()
-                            // document.getElementById("features").innerText="Age:"+ obj[i].faceAttributes.age + " Gender:" + obj[i].faceAttributes.gender ; 
+                            document.getElementById("features").innerHTML='<li class="collection-item" > <span class="badge">' + obj.faceAttributes.age + '</span> Age </li> <li class="collection-item"><span class="badge"> ' + obj.faceAttributes.gender +'</span> Gender </li> <li class="collection-item"><span class="badge"> ' + obj.faceAttributes.glasses +'</span> Glasses </li>' ; 
+                           
+                    })
                     }
                   
                     }
 
                 }
 
-
+                
         </script>
     </body>
 </html>
