@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Detect Faces Sample</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+        
+        <link rel="stylesheet" href="style.css">
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> -->
+         <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+         <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+    </head>
+    <body>
+        
+            <nav>
+                <div class="container">
+                    <div class="nav-wrapper">
+                      <a href="#" class="brand-logo">Face App</a>
+                      <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a href="index.html">HOME</a></li>
+                        <li><a href="addperson.html">ADD PERSON</a></li>
+                      </ul>
+                    </div>
+                </div>
+            </nav>
+    <main>
+           <div class="container">
+                <div class="">
+                        <div class="row">
+                            <h2>Add Person Group</h2>
+                        </div>
+                            <div class="row">
+                                <div class="input-field col m9">
+                                    <input name="PersonName" value=""  placeholder="Name Of Group" id="PersonName" type="text" >
+                                    <label for="PersonName">Person Name Group</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col m9">
+                                    <input name="Discription" value="" placeholder="Discription" id="Discription" type="text"  >
+                                    <label for="Discription">Discription</label>
+                                </div>
+                            </div>
+                            <div class="row">    
+                                <button class="btn waves-effect waves-light" type="submit" name="submit" id="submit">Submit
+                                    <i class="material-icons right"></i>
+                                </button>
+                                <div id="text"></div>
+                            </div>
+                </div>
+           </div>
+  </main>
+    <footer class="page-footer">
+            <div class="container">
+              <div class="row">
+                <div class="col l6 s12">
+                  <h5 class="white-text"></h5>
+                  <p class="grey-text text-lighten-4"></p>
+                </div>
+                <div class="col l4 offset-l2 s12">
+                  
+                </div>
+              </div>
+            </div>
+            <div class="footer-copyright">
+              <div class="container">
+              © 2019 Copyright Text
+              <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+              </div>
+            </div>
+          </footer>
+    
+
+      
+          <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+      
+      
+      <script type="text/javascript">
+            
+           
+            $(function() {
+                var subscriptionKey = "d56a00a55f9c44c9a0372880cfa969da";
+    
+                var uriBase ="https://reconface.cognitiveservices.azure.com/face/v1.0/persongroups/";
+
+               
+                function uniqId() {
+                     return Math.round(new Date().getTime() + (Math.random() * 100));
+                }
+
+                console.log(uniqId());
+                var name = $('#PersonName').val();
+                var Discription = $('#Discription').val();
+                
+
+                    var params = {
+                        // Request parameters
+                        "name":"Presidents"
+                    };
+
+                // $( "#submit" ).on( "click", function( event ) {
+                //     event.preventDefault();
+                //     console.log(params)
+                // });
+
+            //     $('#submit').click((e)=>{
+            //         e.preventDefault();
+            //         $.ajax({
+                        
+            //             url: "https://reconface.cognitiveservices.azure.com/face/v1.0/persongroups/" + uniqId() + "?" + $.param(params),
+            //             beforeSend: function(xhrObj){
+            //                 // Request headers
+            //                 xhrObj.setRequestHeader("Content-Type","application/json");
+            //                 xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","d56a00a55f9c44c9a0372880cfa969da");
+            //             },
+            //             type:"POST",
+            //             //request body
+            //             data: "{body}",
+
+            //         }) .done(function(data) {
+            //             alert("success");
+            //         })
+            //         .fail(function() {
+            //             alert("error");
+            //         });
+            //     })
+               
+               
+            // });
+            function getFaceDetails(){ 
+                var xmlHttp = new XMLHttpRequest(); 
+                var url="https://reconface.cognitiveservices.azure.com/face/v1.0/persongroups/" + uniqId() + "?" + $.param(params)
+
+                xmlHttp.open("POST",url,true); 
+                
+                xmlHttp.setRequestHeader("Content-Type", "application/octet-stream");
+
+                xmlHttp.setRequestHeader("Ocp-Apim-Subscription-Key", "d56a00a55f9c44c9a0372880cfa969da"); 
+                
+                xmlHttp.send(); 
+                
+                xmlHttp.onreadystatechange = function (response) {
+                
+                    if (this.readyState == 4 && this.status == 200) { 
+
+                        console.log (response)
+                    }
+                }
+            }
+            $('#submit').click((e)=>{
+                e.preventDefault()
+                getFaceDetails();
+            })
+
+            })
+
+        </script>
+    </body>
+</html>

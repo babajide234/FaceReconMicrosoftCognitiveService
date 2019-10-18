@@ -22,7 +22,8 @@
                     <div class="nav-wrapper">
                       <a href="#" class="brand-logo">Face App</a>
                       <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a href="sass.html">Sass</a></li>
+                        <li><a href="index.html">HOME</a></li>
+                        <!-- <li><a href="addperson.html">ADD PERSON</a></li> -->
                       </ul>
                     </div>
                 </div>
@@ -30,15 +31,15 @@
     <main>
             <div class="container">
                 <div class="row">
-                    <h1 class="display-1 text-center">welcome</h1>
+                    <h1 class="display-1 text-center">Welcome</h1>
                 </div>
                 <div id="content" class="row">
-                          <div class="col s6">
-                              <div id="btnUpload"> 
-                                  <div class="upload-btn-wrapper"> 
-                                  <p class="h2" >Upload a file</p> 
-                                  <div class="file-field input-field">
-                                      <div class="btn">
+                      <div class="col s4">
+                          <div id="btnUpload"> 
+                              <div class="upload-btn-wrapper"> 
+                              <p class="h2" >Upload a file</p> 
+                              <div class="file-field input-field">
+                                  <div class="btn">
                                       <span>File</span>
                                       <input type="file" name="myfile" id="upload">
                                       </div>
@@ -51,16 +52,15 @@
                           </div> 
                         </div> 
                         
-                        <div class="col s6" id="imgcan">
-                                
-                                <div id="imgDiv">    
-                                    <img id="imgx"  class="img-fluid" alt="Responsive image">
-                                    <div id="face"></div>
-                                </div>
-                                <ul id="features" class="collection"> </ul>
-                        </div> 
-                   </div>
-               </div>
+                    <div class="col s8" id="imgcan">    
+                            <div id="imgDiv">    
+                              <img id="imgx"  class="img-fluid" >
+                              <div id="face"></div>
+                           </div>
+                        <ul id="features" class="collection"> </ul>
+                    </div> 
+                </div>
+              </div>
     </div>
 
   </main>
@@ -79,7 +79,6 @@
             <div class="footer-copyright">
               <div class="container">
               © 2019 Copyright Text
-              <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
               </div>
             </div>
           </footer>
@@ -101,7 +100,7 @@
             // Request parameters.
             var params = {
                 "returnFaceId": "true",
-                "returnFaceLandmarks": "false",
+                "returnFaceLandmarks": "true",
                 "returnFaceAttributes":
                     "age,gender,headPose,smile,facialHair,glasses,emotion," +
                     "hair,makeup,occlusion,accessories,blur,exposure,noise"
@@ -142,21 +141,31 @@
                         var obj = JSON.parse(this.responseText)
                         var oleft = document.getElementById("imgx").offsetLeft; 
                         var otop = document.getElementById("imgx").offsetTop; 
+
                         var faceRec = document.createElement('div')
+                        
                         var fc = document.getElementById('face')
                         var fet = document.getElementById("features")
+                        
+                        console.log(obj)
 
                         obj.forEach((obj) => {
                             var faceRec = document.createElement('div')
+                            var points = document.createElement('span')
+
                             faceRec.style.left =  oleft + obj.faceRectangle.left + 'px'
                             faceRec.style.top =  otop + obj.faceRectangle.top + 'px'
                             faceRec.style.width = obj.faceRectangle.width + 'px'
                             faceRec.style.height = obj.faceRectangle.height + 'px'
-                            faceRec.style.border = '2px solid black'
+                            faceRec.style.border = '2px solid purple'
                             faceRec.style.position ='absolute'
                             faceRec.id = 'faceRec' 
                             fc.append(faceRec)
-                            document.getElementById("features").innerHTML='<li class="collection-item" > <span class="badge">' + obj.faceAttributes.age + '</span> Age </li> <li class="collection-item"><span class="badge"> ' + obj.faceAttributes.gender +'</span> Gender </li> <li class="collection-item"><span class="badge"> ' + obj.faceAttributes.glasses +'</span> Glasses </li>' ; 
+                            points.style.left = oleft + obj.faceLandmarks.eyeLeftBottom.x + 'px'
+                            points.style.top = otop + obj.faceLandmarks.eyeLeftBottom.x + 'px'
+                            
+                            faceRec.append(points)
+                            document.getElementById("features").innerHTML='<li class="collection-item" > <span class="badge">' + obj.faceAttributes.age + '</span>  Approximate Age: </li> <li class="collection-item"><span class="badge"> ' + obj.faceAttributes.gender +'</span> Gender: </li> <li class="collection-item"><span class="badge"> ' + obj.faceAttributes.glasses +'</span> Glasses: </li>' ; 
                            
                     })
                     }
