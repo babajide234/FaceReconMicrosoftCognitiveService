@@ -17,51 +17,28 @@
     </head>
     <body>
         
-            <nav>
-                <div class="container">
-                    <div class="nav-wrapper">
-                      <a href="#" class="brand-logo">Face App</a>
-                      <ul id="nav-mobile" class="right hide-on-med-and-down">
-                        <li><a href="index.html">HOME</a></li>
-                        <!-- <li><a href="addperson.html">ADD PERSON</a></li> -->
-                      </ul>
-                    </div>
-                </div>
-            </nav>
-    <main>
+      <nav>
+        <div class="container">
+            <div class="nav-wrapper">
+              <a href="#" class="brand-logo">Face App</a>
+              <ul id="nav-mobile" class="right hide-on-med-and-down">
+                  <li><a href="index.html">HOME</a></li>
+                  <li><a href="vid.html">VIDEO RECOGNITION</a></li>
+                  <li><a href="detectFace.html">FACE DECTECTION</a></li>
+              </ul>
+            </div>
+        </div>
+      </nav>
+  <main>
             <div class="container">
-                <div class="row">
-                    <h1 class="display-1 text-center">Welcome</h1>
+              <div class="row">
+                <div class="logo_container">
+                    <img src="./img/logo.jpg" alt="" class=" logo">
                 </div>
-                <div id="content" class="row">
-                      <div class="col s4">
-                          <div id="btnUpload"> 
-                              <div class="upload-btn-wrapper"> 
-                              <p class="h2" >Upload a file</p> 
-                              <div class="file-field input-field">
-                                  <div class="btn">
-                                      <span>File</span>
-                                      <input type="file" name="myfile" id="upload">
-                                      </div>
-                                      <div class="file-path-wrapper">
-                                       <!-- <input class="file-path validate" type="text"> -->
-                                      <input type="text"  class="file-path validate" /> 
-                                   </div>
-                                 </div>
-                              </div>
-                          </div> 
-                        </div> 
-                        
-                    <div class="col s8" id="imgcan">    
-                            <div id="imgDiv">    
-                              <img id="imgx"  class="img-fluid" >
-                              <div id="face"></div>
-                           </div>
-                        <ul id="features" class="collection"> </ul>
-                    </div> 
-                </div>
+                <h2 class="center-align">facial recognition software</h2>
+                <p class="center-align">Using Microsoft Azure Face Api (Application Program Interface) </p>
               </div>
-    </div>
+            </div>
 
   </main>
     <footer class="page-footer">
@@ -88,93 +65,6 @@
           <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-      
-      
-      <script type="text/javascript">
-            
-            document.getElementById('upload').addEventListener('change', fileChange, false);
-            var subscriptionKey = "d56a00a55f9c44c9a0372880cfa969da";
-    
-            var uriBase ="https://reconface.cognitiveservices.azure.com/face/v1.0/detect";
-        
-            // Request parameters.
-            var params = {
-                "returnFaceId": "true",
-                "returnFaceLandmarks": "true",
-                "returnFaceAttributes":
-                    "age,gender,headPose,smile,facialHair,glasses,emotion," +
-                    "hair,makeup,occlusion,accessories,blur,exposure,noise"
-            };
-        
-            
-            
-            function fileChange(event){ 
-                if(event.target.files && event.target.files.length >= 0) { 
-                    var file1= event.target.files[0]; 
-                    var reader = new FileReader(); 
-
-                    console.log(event)
-                    // compress(event);
-                    reader.onload = (event) => { 
-                       document.getElementById("imgx").src = event.target.result; 
-                       getFaceDetails(file1); 
-                    } 
-                } 
-                reader.readAsDataURL(event.target.files[0]);
-            }
-        
-            function getFaceDetails(file){ 
-                var xmlHttp = new XMLHttpRequest(); 
-                var url="https://reconface.cognitiveservices.azure.com/face/v1.0/detect?"+ $.param(params); 
-
-                xmlHttp.open("POST",url,true); 
-                
-                xmlHttp.setRequestHeader("Content-Type", "application/octet-stream");
-
-                xmlHttp.setRequestHeader("Ocp-Apim-Subscription-Key", "d56a00a55f9c44c9a0372880cfa969da"); 
-                
-                xmlHttp.send(file); 
-                
-                xmlHttp.onreadystatechange = function (response) {
-                
-                    if (this.readyState == 4 && this.status == 200) { 
-                        var obj = JSON.parse(this.responseText)
-                        var oleft = document.getElementById("imgx").offsetLeft; 
-                        var otop = document.getElementById("imgx").offsetTop; 
-
-                        var faceRec = document.createElement('div')
-                        
-                        var fc = document.getElementById('face')
-                        var fet = document.getElementById("features")
-                        
-                        console.log(obj)
-
-                        obj.forEach((obj) => {
-                            var faceRec = document.createElement('div')
-                            var points = document.createElement('span')
-
-                            faceRec.style.left =  oleft + obj.faceRectangle.left + 'px'
-                            faceRec.style.top =  otop + obj.faceRectangle.top + 'px'
-                            faceRec.style.width = obj.faceRectangle.width + 'px'
-                            faceRec.style.height = obj.faceRectangle.height + 'px'
-                            faceRec.style.border = '2px solid purple'
-                            faceRec.style.position ='absolute'
-                            faceRec.id = 'faceRec' 
-                            fc.append(faceRec)
-                            points.style.left = oleft + obj.faceLandmarks.eyeLeftBottom.x + 'px'
-                            points.style.top = otop + obj.faceLandmarks.eyeLeftBottom.x + 'px'
-                            
-                            faceRec.append(points)
-                            document.getElementById("features").innerHTML='<li class="collection-item" > <span class="badge">' + obj.faceAttributes.age + '</span>  Approximate Age: </li> <li class="collection-item"><span class="badge"> ' + obj.faceAttributes.gender +'</span> Gender: </li> <li class="collection-item"><span class="badge"> ' + obj.faceAttributes.glasses +'</span> Glasses: </li>' ; 
-                           
-                    })
-                    }
-                  
-                    }
-
-                }
-
-                
-        </script>
+     
     </body>
 </html>
